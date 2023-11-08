@@ -1,17 +1,18 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <svg-icon iconClass="dashboard"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
-export default {
+// import SvgIcon from '@/components/SvgIcon'
+export default { 
   name: 'Dashboard',
   computed: {
     ...mapGetters([
-      'name'
+      'name',
     ])
   }
 }
