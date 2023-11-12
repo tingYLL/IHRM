@@ -23,7 +23,7 @@
         <el-button style="width:350px" type="primary" @click="login">登录</el-button>
    </el-form-item>
    <el-form-item>
-        <el-button style="width:350px" type="primary" @click="testAjax">test</el-button>
+        <el-button style="width:350px" type="primary" @click="testAjax2">test</el-button>
    </el-form-item>
 </el-form>
       </el-card>  
@@ -32,6 +32,7 @@
 </template>
 <script>
 import axios from 'axios'
+import request from '@/utils/request'
 export default {
   name : "Login",
   data() {
@@ -72,19 +73,22 @@ export default {
         isAgree: [{
           //自定义校验规则 规定有rule、value、callback这三个参数
           //value的值有ture 或者 false 两种
-          //callback函数有点像js中的Promise ， 它成功时执行resolve，失败时执行reject
+          //callback函数有点像js中的Promise ， Promise它成功时执行resolve，失败时执行reject
           validator: (rule, value, callback) => {
             // rule规则(这边没有使用到rule)
-            // value检查的数据  true/false
+            // value检查的数据  true/false 如果有勾选，则value值就是true 所以会执行callback()
             // callback 函数 执行这个函数
             // 成功执行callback 失败也执行callback(错误对象 new Error(错误信息))
+
+            //成功执行callback()代表成功 ，执行 callback(new Error('没有勾选用户平台协议')代表失败
             value ? callback() : callback(new Error('没有勾选用户平台协议'))
           }
-        }]
+        }] 
       }
     }
   },
   methods:{
+    //点击按钮后，对表单进行整体校验
     login() {
       this.$refs.form.validate((isOK) => {
         if (isOK) {
@@ -101,6 +105,18 @@ export default {
           data:{
             mobile:'13912345678',
             password:'123456'
+          }
+        })
+    },
+    testAjax2(){
+        request({
+          // url:'https://heimahr.itheima.net/api/sys/login',
+          //URL只要像下面这样写，然后http://localhost:9528就会自动拼接上，然后根据vue.config.js中配置的代理，因为访问路径带有api，便会转发到https://heimahr.itheima.net/api/sys/login
+          url:'/sys/login',
+          method:'post',
+          data:{
+            mobile:'13912345678',
+            password:'123457'
           }
         })
     }
